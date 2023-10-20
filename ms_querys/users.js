@@ -15,7 +15,7 @@ export const users_func_mutations = `
     apellidos: String
     fecha_nacimiento: String
     sexo: String
-    cel: Float
+    cel: String
     email: String
   ): String
 
@@ -24,7 +24,7 @@ export const users_func_mutations = `
     apellidos: String
     fecha_nacimiento: String
     sexo: String
-    cel: Float
+    cel: String
     email: String
     password: String
   ): Message 
@@ -51,7 +51,6 @@ export const users_querys = {
     return result.data;
   },
   loginUser: async (_, args) => {
-    try{
     const result = await axios.get(
       `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`
     );
@@ -64,17 +63,13 @@ export const users_querys = {
     const result_2 = await axios.get(
         `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${id_user}`
         );
-    
-    } catch (error) {
-      return {message: error.message}
-    }
     return {message: "Usuario logeado correctamente"};
   }
 };
 
 export const users_mutations = {
   addUser: async (_, args) => {
-
+    args['cel'] = parseFloat(args['cel']);
     const result = await axios.post(
       `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
       args
@@ -82,8 +77,7 @@ export const users_mutations = {
     return result.data;
   },
   registerUser: async (_, args) => {
-    // add user
-    try{
+    args['cel'] = parseFloat(args['cel']);
     await axios.post(
       `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
       args
@@ -95,9 +89,6 @@ export const users_mutations = {
           "UserEmail": args['email'],
           "UserPasswordHash": args['password']}
       );
-        } catch (error) {
-          return {message: error.message}
-        }
     return {message: "Usuario registrado correctamente"};
   }  
 };
