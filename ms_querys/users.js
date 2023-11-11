@@ -25,6 +25,7 @@ export const users_func_mutations = `
     nombres: String
     apellidos: String
     fecha_nacimiento: String
+    documento: String
     sexo: String
     cel: String
     email: String
@@ -108,20 +109,30 @@ export const users_mutations = {
     return result.data;
   },
   registerUser: async (_, args) => {
-    args["cel"] = parseFloat(args["cel"]);
-    await axios.post(
-      `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
-      args
-    );
-
-    await axios.post(
-      `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/`,
-      {
-        UserEmail: args["email"],
-        UserPasswordHash: args["password"],
+    try{
+      await axios.post(
+        `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/`,
+        {
+          UserEmail: args["email"],
+          UserPasswordHash: args["password"],
+        }
+      );
+    } catch (error) {
+      if (error.response.status == 400) {
+        return { message: "El usuario ya existe" };
       }
-    );
-    return { message: "Usuario registrado correctamente" };
+      return { message: "Error en Auth:" + error.message };
+    }
+    try {
+      args["cel"] = parseFloat(args["cel"]);
+      await axios.post(
+        `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
+        args
+      );
+      return { message: "Usuario registrado correctamente" };
+    } catch (error) {
+      return { message: "Error en Users:" + error.message };
+    }
   },
   updateUser: async (_, args) => {
     try {
