@@ -3,6 +3,7 @@ import "dotenv/config";
 
 export const auth_func_querys = `
   authByID(UserId: ID!): Login
+  token(email: String!, password: String!): TokenMessage
 `;
 
 export const auth_func_mutations = `
@@ -25,6 +26,11 @@ export const auth_squemas = `
     message: String
   }
 
+  type TokenMessage {
+    token: String
+    error: String
+  }
+
   type Login {
     UserId: ID
     UserEmail: String
@@ -35,16 +41,30 @@ export const auth_squemas = `
 
 export const auth_querys = {
     authByID: async (_, { UserId }) => {
-        try{
-          const result = await axios.get(
-            `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${UserId}`
-            );
-          return result.data;
-        } catch (error) {
-          return { "message": "El usuario no existe"};
-        }
-      },
-    };
+      try{
+        const result = await axios.get(
+          `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${UserId}`
+          );
+        return result.data;
+      } catch (error) {
+        return { "message": "El usuario no existe"};
+      }
+    },
+    token: async (_, { email, password }) => {
+      try{
+        const result = await axios.post(
+          `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/token`,
+          {
+            email: email,
+            password: password,
+          }
+        );
+        return result.data;
+      } catch (error) {
+        return { "error": "Error en el servidor"};
+      }
+    },
+  };
   
   export const auth_mutations = {
     addAuth: async (_, args) => {

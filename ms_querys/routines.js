@@ -1,5 +1,6 @@
 import axios from "axios";
 import "dotenv/config";
+import { auth_decorator } from "../support/authDecorator.js";
 
 export const routines_func_querys = `
   routineUserDay(ID: ID!, DAY: String!): Exerciseday
@@ -48,13 +49,15 @@ export const routines_squemas = `
 `;
 
 export const routines_querys = {
-  routineUserDay: async (_, { ID, DAY }) => {
+  routineUserDay: async (_, { ID, DAY, token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${ID}/${DAY}`
     );
     return result.data;
   },
-  routineUser: async (_, { ID }) => {
+  routineUser: async (_, { ID, token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${ID}`
     );

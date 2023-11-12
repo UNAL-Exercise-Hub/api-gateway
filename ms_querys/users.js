@@ -7,7 +7,7 @@ export const users_func_querys = `
   loginUser(
     email: String
     password: String
-  ): Message
+  ): TokenMessage
 `;
 
 export const users_func_mutations = `
@@ -82,20 +82,32 @@ export const users_querys = {
       return { message: "Usuario no encontrado" };
     }
   },
-  loginUser: async (_, args) => {
-    const result = await axios.get(
-      `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`
-    );
-    var id_user = null;
-    for (let i = 0; i < result.data.length; i++) {
-      if (result.data[i].email == args["email"]) {
-        id_user = result.data[i].id_usuario;
+  loginUser: async (_, { email, password }) => {
+    try{
+      const result_users = await axios.get(
+        `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/byEmail?email=${email}`
+      );
+      if (result_users.data.error) {
+        return { error: "Error en la base de datos de usuarios, usuario no encontrado" };
       }
+      const result_auth = await axios.post(
+        `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/token`,
+        {
+          email: email,
+          password: password,
+        }
+      );
+      const token = result_auth.data.token;
+      if (result_auth.data.error) {
+        return { error: result_auth.data.error };
+      }
+      return { token: token};
+    } catch (error) {
+      if (error.response.status == 404) {
+        return { error: "El usuario no existe" };
+      }
+      return { error: error.message };
     }
-    const result_2 = await axios.get(
-      `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${id_user}`
-    );
-    return { message: "Usuario logeado correctamente" };
   },
 };
 

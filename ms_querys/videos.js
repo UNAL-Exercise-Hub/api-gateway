@@ -1,10 +1,11 @@
 import axios from "axios";
 import "dotenv/config";
+import { auth_decorator } from "../support/authDecorator.js";
 
 export const videos_func_querys = `
-  allvideos: [Video]
-  videoByID(ID: ID!): Video
-  allmuscles: [Musculo]
+  allvideos(token: String!): [Video]
+  videoByID(ID: ID!, token: String!): Video
+  allmuscles(token: String!): [Musculo]
   allgroups: [GrupoMuscular]
   allobjectives: [Objetivo]
   allequipments: [Equipamento]
@@ -109,49 +110,58 @@ export const videos_squemas = `
 `;
 
 export const videos_querys = {
-  allvideos: async () => {
+  allvideos: async (_, { token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`
     );
+    console.log(result.data);
     return result.data.videos;
   },
-  videoByID: async (_, { ID }) => {
+  videoByID: async (_, { ID, token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos/${ID}`
     );
     return result.data.videos;
   },
-  allmuscles: async () => {
+  allmuscles: async (_, { token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/musculos`
     );
     return result.data.musculos;
   },
-  allgroups: async () => {
+  allgroups: async (_, { token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/grupoMuscular`
     );
     return result.data.grupos;
   },
-  allobjectives: async () => {
+  allobjectives: async (_, { token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/objetivo`
     );
     return result.data.objetivos;
   },
-  alldifficulties: async () => {
+  alldifficulties: async (_, { token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/dificultad`
     );
     return result.data.dificultades;
   },
-  allequipments: async () => {
+  allequipments: async (_, { token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/equipamento`
     );
     return result.data.equipamentos;
   },
-  alldisciplines: async () => {
+  alldisciplines: async (_, { token }) => {
+    await auth_decorator(token);
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/disciplina`
     );
