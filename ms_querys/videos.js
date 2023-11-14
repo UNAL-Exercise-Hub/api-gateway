@@ -1,6 +1,7 @@
 import axios from "axios";
 import "dotenv/config";
 import { auth_decorator } from "../support/authDecorator.js";
+import { soap } from "../support/xmlgetter.js";
 
 export const videos_func_querys = `
   allvideos: [Video]
@@ -110,9 +111,16 @@ export const videos_squemas = `
 `;
 
 export const videos_querys = {
-  allvideos: async () => {
+  allvideos: async (_, { token }) => {
+    const prefix = await soap().then((result) => {
+      return result;
+    }). catch((error) => {
+      console.log(error);
+    });
+    console.log(prefix)
+
+    await auth_decorator(token);
     console.log(`http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`);
-    console.log('paso');
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`
     );

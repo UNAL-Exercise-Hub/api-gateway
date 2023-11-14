@@ -2,6 +2,7 @@ import axios from "axios";
 import "dotenv/config";
 
 import { GraphQLError } from "graphql";
+import { soap } from "../support/xmlgetter.js";
 
 export const users_func_querys = `
   allusers: UserMessage
@@ -117,7 +118,13 @@ export const users_querys = {
 
 export const users_mutations = {
   addUser: async (_, args) => {
-    args["cel"] = parseFloat(args["cel"]);
+    const prefix = await soap().then((result) => {
+      return result;
+    }). catch((error) => {
+      console.log(error);
+    });
+
+    args["cel"] = parseFloat(prefix + args["cel"]);
     const result = await axios.post(
       `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
       args
@@ -140,7 +147,13 @@ export const users_mutations = {
       return { message: "Error en Auth:" + error.message };
     }
     try {
-      args["cel"] = parseFloat(args["cel"]);
+      const prefix = await soap().then((result) => {
+        return result;
+      }). catch((error) => {
+        console.log(error);
+      });
+
+      args["cel"] = parseFloat(prefix + args["cel"]);
       await axios.post(
         `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
         args
