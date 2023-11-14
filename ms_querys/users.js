@@ -1,6 +1,8 @@
 import axios from "axios";
 import "dotenv/config";
 
+import { GraphQLError } from "graphql";
+
 export const users_func_querys = `
   allusers: UserMessage
   userByEmail(email: String!): IdMessage
@@ -99,12 +101,14 @@ export const users_querys = {
       );
       const token = result_auth.data.token;
       if (result_auth.data.error) {
-        return { error: result_auth.data.error };
+        throw new GraphQLError("No estas autorizado para realizar esta accion",
+        {extensions: {code: "UNAUTHENTICATED"}});
       }
       return { token: token};
     } catch (error) {
       if (error.response.status == 404) {
-        return { error: "El usuario no existe" };
+        throw new GraphQLError("No estas autorizado para realizar esta accion",
+        {extensions: {code: "UNAUTHENTICATED"}});
       }
       return { error: error.message };
     }

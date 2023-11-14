@@ -3,7 +3,7 @@ import "dotenv/config";
 import { auth_decorator } from "../support/authDecorator.js";
 
 export const videos_func_querys = `
-  allvideos(token: String!): [Video]
+  allvideos: [Video]
   videoByID(ID: ID!, token: String!): Video
   allmuscles(token: String!): [Musculo]
   allgroups: [GrupoMuscular]
@@ -110,12 +110,12 @@ export const videos_squemas = `
 `;
 
 export const videos_querys = {
-  allvideos: async (_, { token }) => {
-    await auth_decorator(token);
+  allvideos: async () => {
+    console.log(`http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`);
+    console.log('paso');
     const result = await axios.get(
       `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`
     );
-    console.log(result.data);
     return result.data.videos;
   },
   videoByID: async (_, { ID, token }) => {
