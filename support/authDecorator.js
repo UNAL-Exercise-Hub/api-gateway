@@ -6,7 +6,7 @@ import { GraphQLError } from "graphql";
 export const auth_decorator = async (token) => {
   try{
     await axios.get(
-      `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/verifytoken`,
+      `${process.env.PROTOCOL}://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/verifytoken`,
       {
         data: {
           token: token,

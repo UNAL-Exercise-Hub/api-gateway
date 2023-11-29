@@ -120,58 +120,58 @@ export const videos_querys = {
     console.log(prefix)
 
     await auth_decorator(token);
-    console.log(`http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`);
+    console.log(`${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`);
     const result = await axios.get(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`
     );
     return result.data.videos;
   },
   videoByID: async (_, { ID, token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos/${ID}`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos/${ID}`
     );
     return result.data.videos;
   },
   allmuscles: async (_, { token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/musculos`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/musculos`
     );
     return result.data.musculos;
   },
   allgroups: async (_, { token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/grupoMuscular`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/grupoMuscular`
     );
     return result.data.grupos;
   },
   allobjectives: async (_, { token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/objetivo`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/objetivo`
     );
     return result.data.objetivos;
   },
   alldifficulties: async (_, { token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/dificultad`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/dificultad`
     );
     return result.data.dificultades;
   },
   allequipments: async (_, { token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/equipamento`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/equipamento`
     );
     return result.data.equipamentos;
   },
   alldisciplines: async (_, { token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/disciplina`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/categoria/disciplina`
     );
     return result.data.disciplina;
   },
@@ -181,21 +181,21 @@ export const videos_mutations = {
   addVideo: async (_, args) => {
     console.log(args);
     const result = await axios.post(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`,
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos`,
       args
     );
     return result.data;
   },
   updateVideo: async (_, args) => {
     const result = await axios.put(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos/${args.ID}`,
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos/${args.ID}`,
       args
     );
     return result.data.videos;
   },
   deleteVideo: async (_, { ID }) => {
     const result = await axios.delete(
-      `http://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos/${ID}`
+      `${process.env.PROTOCOL}://${process.env.NAME_VIDEOS}:${process.env.PORT_VIDEOS}/videos/${ID}`
     );
     return result.data;
   },

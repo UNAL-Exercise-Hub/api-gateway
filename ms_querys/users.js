@@ -71,14 +71,14 @@ export const users_squemas = `
 export const users_querys = {
   allusers: async () => {
     const result = await axios.get(
-      `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`
+      `${process.env.PROTOCOL}://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`
     );
     return result.data;
   },
   userByEmail: async (_, { email }) => {
     try {
       const result = await axios.get(
-        `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/byEmail?email=${email}`
+        `${process.env.PROTOCOL}://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/byEmail?email=${email}`
       );
       return result.data;
     } catch (error) {
@@ -88,13 +88,13 @@ export const users_querys = {
   loginUser: async (_, { email, password }) => {
     try{
       const result_users = await axios.get(
-        `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/byEmail?email=${email}`
+        `${process.env.PROTOCOL}://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/byEmail?email=${email}`
       );
       if (result_users.data.error) {
         return { error: "Error en la base de datos de usuarios, usuario no encontrado" };
       }
       const result_auth = await axios.post(
-        `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/token`,
+        `${process.env.PROTOCOL}://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/token`,
         {
           email: email,
           password: password,
@@ -126,7 +126,7 @@ export const users_mutations = {
 
     args["cel"] = parseFloat(prefix + args["cel"]);
     const result = await axios.post(
-      `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
+      `${process.env.PROTOCOL}://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
       args
     );
     return result.data;
@@ -134,7 +134,7 @@ export const users_mutations = {
   registerUser: async (_, args) => {
     try{
       await axios.post(
-        `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/`,
+        `${process.env.PROTOCOL}://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/`,
         {
           UserEmail: args["email"],
           UserPasswordHash: args["password"],
@@ -155,7 +155,7 @@ export const users_mutations = {
 
       args["cel"] = parseFloat(prefix + args["cel"]);
       await axios.post(
-        `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
+        `${process.env.PROTOCOL}://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user`,
         args
       );
       return { message: "Usuario registrado correctamente" };
@@ -167,7 +167,7 @@ export const users_mutations = {
     try {
       args["cel"] = parseFloat(args["cel"]);
       const result = await axios.put(
-        `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/${args["id_usuario"]}`,
+        `${process.env.PROTOCOL}://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/${args["id_usuario"]}`,
         args
       );
       return result.data;
@@ -178,7 +178,7 @@ export const users_mutations = {
   deleteUser: async (_, { ID }) => {
     try{
     const result = await axios.delete(
-      `http://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/${ID}`
+      `${process.env.PROTOCOL}://${process.env.NAME_USERS}:${process.env.PORT_USERS}/user/${ID}`
     );
     return result.data;
     } catch (error) {

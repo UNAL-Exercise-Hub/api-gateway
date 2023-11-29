@@ -43,7 +43,7 @@ export const auth_querys = {
     authByID: async (_, { UserId }) => {
       try{
         const result = await axios.get(
-          `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${UserId}`
+          `${process.env.PROTOCOL}://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${UserId}`
           );
         return result.data;
       } catch (error) {
@@ -53,7 +53,7 @@ export const auth_querys = {
     token: async (_, { email, password }) => {
       try{
         const result = await axios.post(
-          `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/token`,
+          `${process.env.PROTOCOL}://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/token`,
           {
             email: email,
             password: password,
@@ -70,7 +70,7 @@ export const auth_querys = {
     addAuth: async (_, args) => {
       try {
         await axios.post(
-          `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/`,
+          `${process.env.PROTOCOL}://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/`,
         args
         );
         return { "message": "Usuario creado"};
@@ -81,7 +81,7 @@ export const auth_querys = {
     updateAuth: async (_, args) => {
       try {
         const result = await axios.put(
-          `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${args.ID}`,
+          `${process.env.PROTOCOL}://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${args.ID}`,
           args
         );
         return result.data.videos;
@@ -92,7 +92,7 @@ export const auth_querys = {
     deleteAuth: async (_, { ID }) => {
       try{
         const result = await axios.delete(
-          `http://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${ID}`
+          `${process.env.PROTOCOL}://${process.env.NAME_AUTH}:${process.env.PORT_AUTH}/login/${ID}`
         );
         console.log(result.data)
         return result.data;

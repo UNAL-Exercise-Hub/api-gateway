@@ -52,14 +52,14 @@ export const routines_querys = {
   routineUserDay: async (_, { ID, DAY, token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${ID}/${DAY}`
+      `${process.env.PROTOCOL}://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${ID}/${DAY}`
     );
     return result.data;
   },
   routineUser: async (_, { ID, token }) => {
     await auth_decorator(token);
     const result = await axios.get(
-      `http://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${ID}`
+      `${process.env.PROTOCOL}://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${ID}`
     );
     return result.data;
   },
@@ -68,21 +68,21 @@ export const routines_querys = {
 export const routines_mutations = {
   addRoutine: async (_, args) => {
     const result = await axios.post(
-      `http://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api`,
+      `${process.env.PROTOCOL}://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api`,
       args
     );
     return result.data;
   },
   updateRoutine: async(_, args) => {
     const result = await axios.patch(
-      `http://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${args.ID}/${args.DAY}`,
+      `${process.env.PROTOCOL}://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${args.ID}/${args.DAY}`,
       args
     );
     return result.data;
   },
   deleteRoutine: async(_, { ID }) => {
     const result = await axios.delete(
-      `http://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${ID}`
+      `${process.env.PROTOCOL}://${process.env.NAME_ROUTINES}:${process.env.PORT_ROUTINES}/api/User/${ID}`
     );
     return result.data;
   }
